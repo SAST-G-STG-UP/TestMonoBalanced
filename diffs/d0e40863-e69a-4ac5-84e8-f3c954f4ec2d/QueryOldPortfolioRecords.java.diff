@@ -4,6 +4,7 @@
   */
  package com.myMoneyBuddy.DAOClasses;
  
++import org.hibernate.query.Query;
  import java.util.ArrayList;
  import java.util.LinkedList;
  import java.util.List;
@@ -67,17 +68,17 @@
  		Session hibernateSession = HibernateUtil.getSessionAnnotationFactory().openSession();
  		
  		try
--		{
-+    Object result = hibernateSession.createQuery("select count(*) from OldPortfolioRecords where customerId = :customerId and schemeName = :schemeName and folioNumber = :folioNumber")
-+        .setParameter("customerId", customerId)
-+        .setParameter("schemeName", schemeName)
-+        .setParameter("folioNumber", folioNumber)
-+        .uniqueResult();
+ 		{
  
  			hibernateSession.beginTransaction();
  			
- 			Object result = hibernateSession.createQuery("select count(*) from OldPortfolioRecords "
- 					+ " where customerId='"+customerId+"' and schemeName='"+schemeName+"' and folioNumber='"+folioNumber+"' ").uniqueResult();
+-			Object result = hibernateSession.createQuery("select count(*) from OldPortfolioRecords "
+-					+ " where customerId='"+customerId+"' and schemeName='"+schemeName+"' and folioNumber='"+folioNumber+"' ").uniqueResult();
++            Query query = hibernateSession.createQuery("select count(*) from OldPortfolioRecords where customerId = :customerId and schemeName = :schemeName and folioNumber = :folioNumber");
++            query.setParameter("customerId", customerId);
++            query.setParameter("schemeName", schemeName);
++            query.setParameter("folioNumber", folioNumber);
++            Object result = query.uniqueResult();
  			
  			hibernateSession.getTransaction().commit();
  			
