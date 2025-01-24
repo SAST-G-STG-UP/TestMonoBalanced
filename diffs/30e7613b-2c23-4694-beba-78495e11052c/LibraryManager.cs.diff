@@ -2852,17 +2852,17 @@
              try
              {
                  Directory.CreateDirectory(virtualFolderPath);
-+            var normalizedPath = Path.GetFullPath(path);
-+            if (!normalizedPath.StartsWith(virtualFolderPath))
-+            {
-+                throw new UnauthorizedAccessException("Invalid file path.");
-+            }
  
-+
                  if (collectionType != null)
                  {
                      var path = Path.Combine(virtualFolderPath, collectionType.ToString().ToLowerInvariant() + ".collection");
++                    var normalizedPath = Path.GetFullPath(path);
++                    if (!normalizedPath.StartsWith(rootFolderPath))
++                    {
++                        throw new UnauthorizedAccessException("Invalid file path.");
++                    }
  
++
                      File.WriteAllBytes(path, Array.Empty<byte>());
                  }
  
